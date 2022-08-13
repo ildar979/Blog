@@ -5,6 +5,7 @@ import cors from 'cors';
 import { registerValidation, loginValidation, postCreateValidation } from './validations.js';
 import { UserController, PostController } from './controllers/index.js';
 import { handleValidationErrors, checkAuth } from './utils/index.js';
+import { getTags } from './controllers/PostController.js';
 
 mongoose
   .connect('mongodb+srv://ildar:batistuta@blog.g2yr8kn.mongodb.net/blog?retryWrites=true&w=majority')
@@ -37,8 +38,9 @@ app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
   });
 });
 
+app.get('/tags', PostController.getTags);
 app.get('/posts', PostController.getAll);
-app.get('/posts/tags', PostController.getAll);
+app.get('/posts/tags', PostController.getTags);
 app.get('/posts/:id', PostController.getOne);
 app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, PostController.create);
 app.delete('/posts/:id', checkAuth, PostController.remove);
